@@ -1,4 +1,4 @@
-name: test Configure Docker
+name: test Configure Postgres
 
 on:
   workflow_dispatch:

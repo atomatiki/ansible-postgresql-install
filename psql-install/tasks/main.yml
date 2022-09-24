@@ -1,0 +1,18 @@
+---
+# tasks file for ukumbi-db
+
+- name: "Install packages"
+  apt: "name={{ item }} state=present"
+  with_items:
+    - postgresql
+    - postgresql-contrib
+
+- name: "Install Python packages"
+  apt: "name={{ item }}  state=present"
+  with_items:
+    - python3-psycopg2
+
+- name: "Start and enable services"
+  service: "name={{ item }} state=started enabled=yes"
+  with_items:
+    - postgresql
