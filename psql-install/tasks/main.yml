@@ -1,19 +1,29 @@
 ---
-# tasks file for ukumbi-db
+# tasks file for directus
 
-- name: "Install packages"
-  apt: "name={{ item }} state=present"
-  with_items:
-    - postgresql
-    - postgresql-contrib
+- name: Configuring postgres
 
-- name: "Install Python packages"
-  apt: "name={{ item }}  state=present"
-  with_items:
-    - python3-psycopg2
+  block:
+        
+    # copy compose file to server
+    # --
+    # 
+    - name: Copy compose file to server
+      ansible.builtin.template:
+        src: "templates/docker-compose.yml.jinja2"
+        dest: "{{ user_home_dir }}/.postgres/docker-compose.yaml"
 
-- name: "Start and enable services"
-  service: "name={{ item }} state=started enabled=yes"
-  with_items:
-    - postgresql
 
+    # deploy directus stack
+    # --
+    #
+    - name: Docker Compose Up 
+      community.docker.docker_compose:
+          project_src: ".postgres"
+        
+      register: output
+
+
+    - name: Debug output
+      ansible.builtin.debug:
+        var: output

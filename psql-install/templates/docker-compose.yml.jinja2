@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+
+  database:
+    image: postgis/postgis:13-master
+    container_name: postgis
+    hostname: postgis
+    volumes:
+      - ./data/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "{{ postgres_user }}"
+      POSTGRES_PASSWORD: "{{ postgres_password }}"
+      POSTGRES_DB: "{{ postgres_db }}"
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    hostname: adminer
+    restart: unless-stopped
+    restart: always
+    expose:
+      - 8080
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"
+      - "traefik.enable=true" 
+      - "traefik.http.routers.directus.rule=Host(`{{ adminer_domain }}`)"
+      - "traefik.http.routers.directus.entrypoints=websecure"
+      - "traefik.http.routers.directus.tls.certresolver=production"
+
+
+
+# traefik_network
+# --
+#
+networks:
+  default:
+    external:
+      name: "{{ docker_network }}"
+
+
+    
