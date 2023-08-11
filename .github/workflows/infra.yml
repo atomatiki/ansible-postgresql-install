@@ -81,7 +81,7 @@ jobs:
       - name: Adding Ansible Variables
         run: |
           mkdir -p psql-install/vars/
-          cat << EOF > directus-install/vars/main.yaml
+          cat << EOF > psql-install/vars/main.yaml
           ---
           docker_network: ${{ inputs.docker_network }}
           adminer_domain: ${{ inputs.adminer_domain }}
