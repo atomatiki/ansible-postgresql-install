@@ -64,6 +64,13 @@ jobs:
       - name: Install Ansible
         run: |
           pip install ansible
+
+      - name: Adding or Override Ansible inventory File
+        run: |
+          cat << EOF > ./inventory.ini
+          [webservers]
+          ${{ inputs.TARGET_HOST }}
+          EOF
       
       - name: Adding or Override Ansible Config File
         run: |
